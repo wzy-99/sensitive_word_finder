@@ -9,28 +9,61 @@ namespace sensitive_word_finder
         {
             StreamReader sr = new StreamReader("D:/Program/homework/sensitive_word_finder/input.txt");
             StreamWriter sw = new StreamWriter("D:/Program/homework/sensitive_word_finder/output.txt");
-            string input = new string("");
-            // 读取每行，并用空格连接
-            string line = sr.ReadLine();
-            while (line != null)
+            Finder finder = new Finder("Hello World", "Hello wangziyi");
+            String output = finder.Find(sr);
+            sw.Write(output);
+            sw.Close();
+        }
+    }
+
+    class Finder
+    {
+        String query;
+        String replacement;
+        public Finder(String query, String replacement)
+        {
+            this.query = query;
+            this.replacement = replacement;
+        }
+        public String StringFind(String input)
+        {
+            if (input.Contains(this.query))
             {
-                input += line + ' ';
-                line = sr.ReadLine();
-            }
-            // 删除最后一个空格
-            if (input.Length - 2 > 0)
-            {
-                input = input.Remove(input.Length - 2);
-            }
-            if (input == "Hello World")
-            {
-                sw.WriteLine("Hello wangziyi!");
+                return input.Replace(this.query, this.replacement);
             }
             else
             {
-                sw.Write(input);
+                return input;
             }
-            sw.Close();
+        }
+        public String FileFind(StreamReader input)
+        {
+            string buffer = new string("");
+            string line = input.ReadLine();
+            // 提前文本内容
+            while (line != null)
+            {
+                buffer += line + ' ';
+                line = input.ReadLine();
+            }
+            // 删除最后一个空格
+            if (buffer.Length - 1 > 0)
+            {
+                buffer = buffer.Remove(buffer.Length - 1);
+            }
+            return this.StringFind(buffer);
+        }
+        public String Find(object input)
+        {
+            // 判断输入类型
+            if (input.ToString() == "String")
+            {
+                return this.StringFind((String)input);
+            }
+            else
+            {
+                return this.FileFind((StreamReader)input);
+            }
         }
     }
 }
