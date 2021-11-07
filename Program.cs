@@ -56,7 +56,7 @@ namespace sensitive_word_finder
         public String Find(object input)
         {
             // 判断输入类型
-            if (input.ToString() == "String")
+            if (input.GetType().Name == "String")
             {
                 return this.StringFind((String)input);
             }
