@@ -47,6 +47,8 @@ namespace sensitive_word_finder
             consoleReadBlock.DataArrived += (e) =>
             {
                 transformBlock.Post(e);
+                // Post方法可以实现并行处理message，需要在构造示例的时候设置ExecutionDataflowBlockOptions参数。
+                // 其中MaxDegreeOfParallelism就是最大并行度。
             };
 
             consoleReadBlock.Start();
