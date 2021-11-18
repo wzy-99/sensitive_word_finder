@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Serilog;
 using Serilog.Events;
 using CommandDotNet;
+using Spectre.Console;
+using System.Threading;
 
 namespace sensitive_word_finder
 {
@@ -30,11 +32,32 @@ namespace sensitive_word_finder
                     Description = "the path of output file")]
             string outputPath = "output.txt")
         {
+
+            AnsiConsole.Progress()
+                .Start(ctx =>
+                {
+                    // Define tasks
+                    var task = ctx.AddTask("[green]loading[/]");
+
+                    while (!ctx.IsFinished)
+                    {
+                        task.Increment(1.5);
+                        Thread.Sleep(50);
+                    }
+                });
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(logPath, rollingInterval: RollingInterval.Day) // restrictedToMinimumLevel 限制信息最小等级 rollingInterval 
                 .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information) // Log event sinks 将事件记录到外部表示
                 .CreateLogger();
+
+            var table = new Table();
+            table.AddColumn(new TableColumn("[rgb(255,255,0)]Author[/]"));
+            table.AddColumn(new TableColumn("[rgb(255,0,255)]School[/]"));
+            table.AddColumn(new TableColumn("[rgb(0,255,255)]Subject[/]"));
+            table.AddRow(new Markup("[red]Wangziyi[/]"), new Markup("[blue]Hust[/]"), new Markup("[green]AIA[/]"));
+            AnsiConsole.Write(table);
 
             //定义一个 文本处理流程
             Log.Debug("Creating transformBlock");
