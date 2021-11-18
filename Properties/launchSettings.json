@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "sensitive_word_finder": {
+      "commandName": "Project",
+      "commandLineArgs": "-t 1"
+    }
+  }
+}
