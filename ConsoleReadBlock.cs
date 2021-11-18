@@ -1,4 +1,5 @@
 ﻿using System;
+using Serilog;
 
 namespace sensitive_word_finder
 {
@@ -6,13 +7,13 @@ namespace sensitive_word_finder
     {
         public void Start()
         {
-
-            Console.WriteLine("等待输入 ");
+            Log.Information("Please input");
             while (true)
             {
                 string input = Console.ReadLine();
                 if (input != "")
                 {
+                    Log.Information("Input string: {Input}", input);
                     DataArrived?.Invoke(input);
                 }
             }

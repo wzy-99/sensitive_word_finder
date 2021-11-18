@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Serilog;
 
 
 namespace sensitive_word_finder
@@ -19,6 +20,7 @@ namespace sensitive_word_finder
                 string line = null;
                 while ((line = sr.ReadLine()) != null)
                 {
+                    Log.Information("Input string: {Line}", line);
                     Console.WriteLine(line);
                     DataArrived?.Invoke(line);
                 }
